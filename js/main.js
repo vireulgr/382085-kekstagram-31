@@ -77,7 +77,7 @@ function getCommentMessage() {
   */
 function getCommentAvatar() {
   const num = getRandInt(1, 6);
-  return 'img/avatar-' + num + '.svg';
+  return `img/avatar-${num}.svg`;
 }
 
 /**
@@ -87,20 +87,28 @@ function getCommentAvatar() {
 function getCommentName() {
   const NAMES = [
     'Анастасия',
+    'Андрей',
     'Анна',
     'Артём',
     'Василий',
+    'Владимир',
+    'Евгений',
     'Екатерина',
     'Елизавета',
+    'Елена',
     'Кирилл',
     'Константин',
     'Ксения',
     'Марина',
     'Мария',
+    'Михаил',
     'Оксана',
+    'Олег',
+    'Ольга',
     'Пётр',
     'Юлия',
-    'Яков'
+    'Яков',
+    'Яна'
   ];
   return NAMES[getRandInt(0, NAMES.length - 1)];
 }
@@ -110,8 +118,8 @@ function getCommentName() {
   * @returns {string} URL
   */
 function getPictureUrl(index) {
-  const num = (1 + (index % 25));
-  return 'photos/' + num + '.jpg';
+  const num = 1 + (index % 25);
+  return `photos/${num}.jpg`;
 }
 
 /**
@@ -142,6 +150,7 @@ function generatePictureObject(idx) {
   const comments = generateComments(getRandInt(0, 30));
   const obj = {
     id: idx,
+    authorName: 'Имя автора',
     url: getPictureUrl(idx),
     description: 'Описание поста.',
     likes: getRandInt(0, 150),
@@ -175,6 +184,10 @@ function createElementFromPictureItem(item) {
 
   const pictureDesc = pictureItem.querySelector('p.post__description');
   pictureDesc.textContent = item.description;
+
+
+  const pictureAuthor = pictureItem.querySelector('p.social__caption');
+  pictureAuthor.textContent = item.authorName;
 
   const likesCount = pictureItem.querySelector('span.likes-count');
   likesCount.textContent = item.likes;

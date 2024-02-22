@@ -161,57 +161,13 @@ function generatePictureObject(idx) {
   return obj;
 }
 
-//function createCommentElementFromCommentItem(comment) {
-//  const commentTemplate = document.getElementById('comment-template');
-//  const commentElem = commentTemplate.content.cloneNode(true);
-//
-//  const commentName = commentElem.querySelector('b.comment__name');
-//  commentName.textContent = comment.name;
-//  const commentMessage = commentElem.querySelector('p.comment__message');
-//  commentMessage.textContent = comment.message;
-//  const commentAvatar = commentElem.querySelector('img.comment__avatar');
-//  commentAvatar.src = comment.avatar;
-//
-//  return commentElem;
-//}
 
-//function createElementFromPictureItem(item) {
-//  const picTemplate = document.getElementById('picture-item-template');
-//
-//  const pictureItem = picTemplate.content.cloneNode(true);
-//  //pictureItem.dataset.postId = item.id;
-//
-//  const pictureImg = pictureItem.querySelector('img.post__picture');
-//  pictureImg.src = item.url;
-//
-//  const pictureDesc = pictureItem.querySelector('p.post__description');
-//  pictureDesc.textContent = item.description;
-//
-//
-//  const pictureAuthor = pictureItem.querySelector('p.social__caption');
-//  pictureAuthor.textContent = item.authorName;
-//
-//  const likesCount = pictureItem.querySelector('span.likes-count');
-//  likesCount.textContent = item.likes;
-//
-//  const comments = pictureItem.querySelector('ul.comments');
-//  for (const comment of item.comments) {
-//    const commentItem = createCommentElementFromCommentItem(comment);
-//    comments.appendChild(commentItem);
-//  }
-//
-//  return pictureItem;
-//}
+function main() {
+  const pictures = Array.from({length: 25}, (_, i) => generatePictureObject(i + 1));
+  // дальше код просто чтобы pictures хоть как то использовались и линтер не ругался
+  const para = document.createElement('p');
+  para.textContent = JSON.stringify(pictures);
+  document.appendChild(para);
+}
 
-//function main() {
-//  const picsContainer = document.querySelector('ul.posts');
-//  for (let i = 0; i < 25; i += 1) {
-//    const pictureItem = generatePictureObject(i + 1);
-//    const domNode = createElementFromPictureItem(pictureItem);
-//    picsContainer.appendChild(domNode);
-//  }
-//}
-//
-//main();
-
-const pictures = Array.from({length: 25}, (_, i) => generatePictureObject(i + 1));
+main();

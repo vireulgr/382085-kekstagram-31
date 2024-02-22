@@ -1,24 +1,24 @@
-/*
-const example = {
+/* Пример объекта PictureItem
+  const example = {
     id: 123,
     url: 'photos/{{i}}.jpg',
     description: 'описание',
     likes: 9,
     comments: [
-          {
-                  id: 132,
-                  avatar: 'img/avatar-6.svg',
-                  message: 'В целом всё неплохохохо',
-                  name: 'Артём',
-                },
-          {
-                  id: 132,
-                  avatar: 'img/avatar-{{random() * 5 + 1}}.svg',
-                  message: 'В целом всё неплохохохо',
-                  name: 'Артём',
-                },
-        ]
-}
+      {
+        id: 132,
+        avatar: 'img/avatar-6.svg',
+        message: 'В целом всё неплохохохо',
+        name: 'Артём',
+      },
+      {
+        id: 132,
+        avatar: 'img/avatar-{{random() * 5 + 1}}.svg',
+        message: 'В целом всё неплохохохо',
+        name: 'Артём',
+      },
+    ]
+  }
 */
 
 /**
@@ -115,15 +115,16 @@ function getCommentName() {
 
 /**
   * @description Генерирует URL для картинки
+  * @param {number} index номер для геренации URL картинки
   * @returns {string} URL
   */
 function getPictureUrl(index) {
-  const num = 1 + (index % 25);
-  return `photos/${num}.jpg`;
+  return `photos/${index}.jpg`;
 }
 
 /**
   * @description Генерирует массив комментариев
+  * @param {number} qtu количество комментариев
   * @returns {CommentItem[]} массив комментариев
   */
 function generateComments(qty) {
@@ -142,7 +143,8 @@ function generateComments(qty) {
 }
 
 /**
-  * @description Генерирует массив комментариев
+  * @description Генерирует объект поста с комментариями
+  * @param {number} idx индекс объекта (от 1 до 25)
   * @returns {PictureItem}
   */
 function generatePictureObject(idx) {
@@ -150,7 +152,7 @@ function generatePictureObject(idx) {
   const comments = generateComments(getRandInt(0, 30));
   const obj = {
     id: idx,
-    authorName: 'Имя автора',
+    //authorName: 'Имя автора',
     url: getPictureUrl(idx),
     description: 'Описание поста.',
     likes: getRandInt(0, 150),
@@ -159,55 +161,57 @@ function generatePictureObject(idx) {
   return obj;
 }
 
-function createCommentElementFromCommentItem(comment) {
-  const commentTemplate = document.getElementById('comment-template');
-  const commentElem = commentTemplate.content.cloneNode(true);
+//function createCommentElementFromCommentItem(comment) {
+//  const commentTemplate = document.getElementById('comment-template');
+//  const commentElem = commentTemplate.content.cloneNode(true);
+//
+//  const commentName = commentElem.querySelector('b.comment__name');
+//  commentName.textContent = comment.name;
+//  const commentMessage = commentElem.querySelector('p.comment__message');
+//  commentMessage.textContent = comment.message;
+//  const commentAvatar = commentElem.querySelector('img.comment__avatar');
+//  commentAvatar.src = comment.avatar;
+//
+//  return commentElem;
+//}
 
-  const commentName = commentElem.querySelector('b.comment__name');
-  commentName.textContent = comment.name;
-  const commentMessage = commentElem.querySelector('p.comment__message');
-  commentMessage.textContent = comment.message;
-  const commentAvatar = commentElem.querySelector('img.comment__avatar');
-  commentAvatar.src = comment.avatar;
+//function createElementFromPictureItem(item) {
+//  const picTemplate = document.getElementById('picture-item-template');
+//
+//  const pictureItem = picTemplate.content.cloneNode(true);
+//  //pictureItem.dataset.postId = item.id;
+//
+//  const pictureImg = pictureItem.querySelector('img.post__picture');
+//  pictureImg.src = item.url;
+//
+//  const pictureDesc = pictureItem.querySelector('p.post__description');
+//  pictureDesc.textContent = item.description;
+//
+//
+//  const pictureAuthor = pictureItem.querySelector('p.social__caption');
+//  pictureAuthor.textContent = item.authorName;
+//
+//  const likesCount = pictureItem.querySelector('span.likes-count');
+//  likesCount.textContent = item.likes;
+//
+//  const comments = pictureItem.querySelector('ul.comments');
+//  for (const comment of item.comments) {
+//    const commentItem = createCommentElementFromCommentItem(comment);
+//    comments.appendChild(commentItem);
+//  }
+//
+//  return pictureItem;
+//}
 
-  return commentElem;
-}
+//function main() {
+//  const picsContainer = document.querySelector('ul.posts');
+//  for (let i = 0; i < 25; i += 1) {
+//    const pictureItem = generatePictureObject(i + 1);
+//    const domNode = createElementFromPictureItem(pictureItem);
+//    picsContainer.appendChild(domNode);
+//  }
+//}
+//
+//main();
 
-function createElementFromPictureItem(item) {
-  const picTemplate = document.getElementById('picture-item-template');
-
-  const pictureItem = picTemplate.content.cloneNode(true);
-  //pictureItem.dataset.postId = item.id;
-
-  const pictureImg = pictureItem.querySelector('img.post__picture');
-  pictureImg.src = item.url;
-
-  const pictureDesc = pictureItem.querySelector('p.post__description');
-  pictureDesc.textContent = item.description;
-
-
-  const pictureAuthor = pictureItem.querySelector('p.social__caption');
-  pictureAuthor.textContent = item.authorName;
-
-  const likesCount = pictureItem.querySelector('span.likes-count');
-  likesCount.textContent = item.likes;
-
-  const comments = pictureItem.querySelector('ul.comments');
-  for (const comment of item.comments) {
-    const commentItem = createCommentElementFromCommentItem(comment);
-    comments.appendChild(commentItem);
-  }
-
-  return pictureItem;
-}
-
-function main() {
-  const picsContainer = document.querySelector('ul.posts');
-  for (let i = 0; i < 25; i += 1) {
-    const pictureItem = generatePictureObject(i);
-    const domNode = createElementFromPictureItem(pictureItem);
-    picsContainer.appendChild(domNode);
-  }
-}
-
-main();
+const pictures = Array.from({length: 25}, (_, i) => generatePictureObject(i + 1));

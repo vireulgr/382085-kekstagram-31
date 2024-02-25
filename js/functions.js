@@ -59,6 +59,19 @@ function extractDigits(arg) {
   }
 }
 
-extractDigits('1 бутылка кефира, 0.5 батона');
-checkLength('Hello world!', 20);
-isPalindrome(' а роза упала на лапу азора');
+{
+  const arg1 = '1 бутылка кефира, 0.5 батона';
+  extractDigits(arg1);
+  //console.log(`Извлечение цифр со строкой ${arg1}, результат: ${extractDigits(arg1)}`);
+}
+{
+  const arg1 = 'Hello world!';
+  const arg2 = 20;
+  checkLength(arg1, arg2);
+  //console.log(`Проверка длины строки аргументы: ${arg1} ${arg2}, результат: ${checkLength(arg1, arg2)}`);
+}
+{
+  const arg1 = ' а роза упала на лапу азора';
+  isPalindrome(arg1);
+  //console.log(`Проверка на палиндром строки ${arg1}, результат ${isPalindrome(arg1)}`);
+}

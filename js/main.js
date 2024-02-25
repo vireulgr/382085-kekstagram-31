@@ -189,7 +189,7 @@ function main() {
   // дальше код просто чтобы pictures хоть как то использовались и линтер не ругался
   const para = document.createElement('p');
   para.textContent = JSON.stringify(pictures);
-  document.appendChild(para);
+  document.body.appendChild(para);
 }
 
 //function testGetRandIntNoRepeat() {

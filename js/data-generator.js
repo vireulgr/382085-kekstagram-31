@@ -160,12 +160,10 @@ function generatePictureObject(idxGen, picGen, commentIdGen) {
 }
 
 
-function generatePicturesData() {
+export function generatePicturesData() {
   const idGenerator = createUniqueRandIntGenerator(1, 25);
   const picGenerator = createUniqueRandIntGenerator(1, 25);
   const commentIdGenerator = createUniqueRandIntGenerator(1, 25 * 30);
   return Array.from({length: 25}, () => generatePictureObject(idGenerator, picGenerator, commentIdGenerator));
 }
-
-export { generatePicturesData };
 

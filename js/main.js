@@ -1,4 +1,4 @@
-import { generatePicturesData } from 'data-generator';
+import { render } from 'render';
 
-const foo = generatePicturesData();
+render(document.querySelector('ul.posts'));
 

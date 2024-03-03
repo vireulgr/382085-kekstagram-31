@@ -1,69 +1,5 @@
-import { generatePictureObject } from 'data-generator';
+import { generatePicturesData } from './data-generator';
 // WORK IN PROGRESS
-/*
-.comments {
-  border-top: 1px solid #bbb;
-  margin: 0;
-  padding: 0;
-  padding-top: 10px;
-
-  list-style: none;
-
-  max-height: 300px;
-  overflow: scroll;
-}
-
-.comment {
-  line-height: 1.5;
-  display: block;
-  margin: 10px;
-  margin-top: 0;
-}
-.comment__avatar {
-  float: left;
-  margin-right: 10px;
-}
-
-.comment__name {
-  font-size: 0.9em;
-  line-height: 1em;
-  display: block;
-}
-
-.comment__message {
-  padding: 3px 0 0;
-  margin: 0;
-}
-
-.comment__message::after {
-  content: '';
-  clear: both;
-  display: table;
-}
-
-.posts {
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-}
-
-.post__description {
-  padding: 0 10px 10px;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.post__picture {
-  width: 100%;
-  height: auto;
-}
-    <section class='container'>
-      <ul class='posts'></ul>
-    </section>
-
-*/
 
 function createHtmlElement(tag, classList = [], textContent = '') {
   const elem = document.createElement(tag);
@@ -204,10 +140,10 @@ function createElementFromPictureItem(item) {
   const likesCount = pictureItem.querySelector('span.likes-count');
   likesCount.textContent = item.likes;
 
-  const comments = pictureItem.querySelector('ul.comments');
+  const commentsEl = pictureItem.querySelector('ul.comments');
   for (const comment of item.comments) {
     const commentItem = createCommentElementFromCommentItem(comment);
-    comments.appendChild(commentItem);
+    commentsEl.appendChild(commentItem);
   }
 
   return pictureItem;
@@ -217,9 +153,9 @@ function createElementFromPictureItem(item) {
 *
 */
 export function render(where) {
-  for (let i = 0; i < 25; i += 1) {
-    const pictureItem = generatePictureObject(i);
-    const domNode = createElementFromPictureItem(pictureItem);
+  const picturesData = generatePicturesData();
+  for (const picture of picturesData) {
+    const domNode = createElementFromPictureItem(picture);
     where.appendChild(domNode);
   }
 }

@@ -59,6 +59,51 @@ function extractDigits(arg) {
   }
 }
 
+/*
+* '8:00' - начало рабочего дня
+* '17:30' - конец рабочего дня
+* '14:00' - начало встречи
+* 90 - продолжительность встречи в минутах
+*/
+inWorkTime('08:00', '17:30', '14:00', 90); // true
+inWorkTime('8:0', '10:0', '8:0', 120); // true
+inWorkTime('08:00', '14:30', '14:00', 90); // false
+inWorkTime('14:00', '17:30', '08:0', 90); // false
+inWorkTime('8:00', '17:30', '08:00', 900); // false
+
+function timeToMinutes(aTime) {
+  const [hours, minutes] = aTime.split(':');
+  return Number(hours) * 60 + Number(minutes);
+}
+
+function testFunction(testData, aFunction) {
+  for (const testCase of testData) {
+    const result = aFunction(...(testCase.args));
+    console.log(`args: ${testCase.args}, got ${result} expected: ${testCase.expected}`);
+  }
+}
+
+function testInWorkTime() {
+  const testData = [
+    {args: ['08:00', '17:30', '14:00', 90], expected: true},
+    {args: ['8:0', '10:0', '8:0', 120], expected: true},
+    {args: ['08:00', '14:30', '14:00', 90], expected: false},
+    {args: ['14:00', '17:30', '08:0', 90], expected: false},
+    {args: ['8:00', '17:30', '08:00', 900], expected: false},
+  ];
+
+  testFunction(testData, inWorkTime);
+}
+
+function inWorkTime(start, end, eventStart, eventDuration) {
+
+  const workDayStart = timeToMinutes(start);
+  const workDayEnd = timeToMinutes(end);
+  const eventStartMinutes = timeToMinutes(eventStart);
+  const eventEnd = eventStartMinutes + eventDuration;
+  return eventEnd <= workDayEnd && eventStartMinutes >= workDayStart;
+}
+
 {
   const arg1 = '1 бутылка кефира, 0.5 батона';
   extractDigits(arg1);
@@ -74,4 +119,7 @@ function extractDigits(arg) {
   const arg1 = ' а роза упала на лапу азора';
   isPalindrome(arg1);
   //console.log(`Проверка на палиндром строки ${arg1}, результат ${isPalindrome(arg1)}`);
+}
+{
+  testInWorkTime();
 }

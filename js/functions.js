@@ -16,7 +16,7 @@ function testFunction(testData, aFunction) {
   }
   const testLog = document.createElement('p');
 
-  styles = [
+  const styles = [
     'white-space: pre;',
     'font-family: "Consolas", "DejaVu Sans Mono", "SF Mono", monospace;',
     'width: fit-content;',

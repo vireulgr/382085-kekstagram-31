@@ -1,6 +1,8 @@
 
 /**
-  * @description функция тестирует
+  * @description Тестирует на тестовых данных
+  * @param {{args: any[], result: any}} testData - тестовые данные и ожидаемый результат
+  * @param {Function} aFunction - функция, которую нужно протестировать
   * @return {void} ничего
 */
 function testFunction(testData, aFunction) {
@@ -25,7 +27,8 @@ function testFunction(testData, aFunction) {
   document.body.insertBefore(testLog, document.body.children[0]);
 }
 
-
+/**
+  */
 function checkLength(aString, maxLength) {
   return aString.length <= maxLength;
 }
@@ -87,7 +90,8 @@ function extractDigits(arg) {
   }
 }
 
-
+/**
+  */
 function testInWorkTime() {
   const testData = [
     {args: ['08:00', '17:30', '14:00', 90], expected: true},

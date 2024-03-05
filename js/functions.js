@@ -1,3 +1,31 @@
+
+/**
+  * @description функция тестирует
+  * @return {void} ничего
+*/
+function testFunction(testData, aFunction) {
+  const testLogText = [];
+  for (const testCase of testData) {
+    const result = aFunction(...(testCase.args));
+
+    const argsStr = testCase.args.toString().padStart(30);
+    const resultStr = result.toString().padStart(10);
+    testLogText.push(`args: ${argsStr}, got ${resultStr} expected: ${testCase.expected}`);
+  }
+  const testLog = document.createElement('p');
+
+  styles = [
+    'white-space: pre;',
+    'font-family: "Consolas", "DejaVu Sans Mono", "SF Mono", monospace;',
+    'width: fit-content;',
+    'margin: 10px auto;',
+  ];
+  testLog.style = styles.join(' ');
+  testLog.textContent = testLogText.join('\r\n');
+  document.body.insertBefore(testLog, document.body.children[0]);
+}
+
+
 function checkLength(aString, maxLength) {
   return aString.length <= maxLength;
 }
@@ -59,29 +87,6 @@ function extractDigits(arg) {
   }
 }
 
-/*
-* '8:00' - начало рабочего дня
-* '17:30' - конец рабочего дня
-* '14:00' - начало встречи
-* 90 - продолжительность встречи в минутах
-*/
-inWorkTime('08:00', '17:30', '14:00', 90); // true
-inWorkTime('8:0', '10:0', '8:0', 120); // true
-inWorkTime('08:00', '14:30', '14:00', 90); // false
-inWorkTime('14:00', '17:30', '08:0', 90); // false
-inWorkTime('8:00', '17:30', '08:00', 900); // false
-
-function timeToMinutes(aTime) {
-  const [hours, minutes] = aTime.split(':');
-  return Number(hours) * 60 + Number(minutes);
-}
-
-function testFunction(testData, aFunction) {
-  for (const testCase of testData) {
-    const result = aFunction(...(testCase.args));
-    console.log(`args: ${testCase.args}, got ${result} expected: ${testCase.expected}`);
-  }
-}
 
 function testInWorkTime() {
   const testData = [
@@ -90,11 +95,32 @@ function testInWorkTime() {
     {args: ['08:00', '14:30', '14:00', 90], expected: false},
     {args: ['14:00', '17:30', '08:0', 90], expected: false},
     {args: ['8:00', '17:30', '08:00', 900], expected: false},
+    {args: ['8:0', '17:30', '8:0', 480], expected: true},
+    {args: ['9:0', '18:30', '8:0', 480], expected: false},
+    {args: ['09:00', '18:30', '09:00', 480], expected: true},
   ];
 
   testFunction(testData, inWorkTime);
 }
 
+/**
+  * @description Переводит строку в формате HH:mm в количество минут
+  *               с 00:00
+  * @param {string} aTime - строка со временем в формате HH:mm
+  * @return {number} - количество минут c 00:00, соответствующее переданному времени
+  */
+function timeToMinutes(aTime) {
+  const [hours, minutes] = aTime.split(':');
+  return Number(hours) * 60 + Number(minutes);
+}
+
+/**
+* @param {string} start - начало рабочего дня
+* @param {string} end - конец рабочего дня
+* @param {string} eventStart - начало встречи
+* @param {number} eventDuration - продолжительность встречи в минутах
+* @return {boolean} - помещается ли встреча в рабочий день
+*/
 function inWorkTime(start, end, eventStart, eventDuration) {
 
   const workDayStart = timeToMinutes(start);
@@ -107,13 +133,13 @@ function inWorkTime(start, end, eventStart, eventDuration) {
 {
   const arg1 = '1 бутылка кефира, 0.5 батона';
   extractDigits(arg1);
-  //console.log(`Извлечение цифр со строкой ${arg1}, результат: ${extractDigits(arg1)}`);
+  // console.log(`Извлечение цифр со строкой ${arg1}, результат: ${extractDigits(arg1)}`);
 }
 {
   const arg1 = 'Hello world!';
   const arg2 = 20;
   checkLength(arg1, arg2);
-  //console.log(`Проверка длины строки аргументы: ${arg1} ${arg2}, результат: ${checkLength(arg1, arg2)}`);
+  // console.log(`Проверка длины строки аргументы: ${arg1} ${arg2}, результат: ${checkLength(arg1, arg2)}`);
 }
 {
   const arg1 = ' а роза упала на лапу азора';

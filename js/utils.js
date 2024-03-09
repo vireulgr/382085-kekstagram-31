@@ -20,4 +20,15 @@ function getRandArrayElem(anArray) {
   return anArray[getRandInt(0, anArray.length - 1)];
 }
 
-export { getRandArrayElem, getRandInt };
+function createHtmlElement(tag, classList = [], textContent = '') {
+  const elem = document.createElement(tag);
+  if (classList.length > 0) {
+    elem.classList.add(...classList);
+  }
+  if (textContent) {
+    elem.textContent = textContent;
+  }
+  return elem;
+}
+
+export { getRandArrayElem, getRandInt, createHtmlElement };

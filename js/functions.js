@@ -92,7 +92,7 @@ function extractDigits(arg) {
 
 /**
   */
-function testInWorkTime() {
+export function testInWorkTime() {
   const testData = [
     {args: ['08:00', '17:30', '14:00', 90], expected: true},
     {args: ['8:0', '10:0', '8:0', 120], expected: true},
@@ -151,5 +151,5 @@ function inWorkTime(start, end, eventStart, eventDuration) {
   //console.log(`Проверка на палиндром строки ${arg1}, результат ${isPalindrome(arg1)}`);
 }
 {
-  testInWorkTime();
+  //testInWorkTime();
 }

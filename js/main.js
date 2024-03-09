@@ -1,4 +1,4 @@
 import { render } from './render';
 
-render(document.querySelector('ul.posts'));
+render(document.querySelector('.pictures'));
 

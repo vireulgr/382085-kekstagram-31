@@ -27,9 +27,13 @@ export function render(where) {
   const pictureTemplateElement = pictureTemplateContent.querySelector('a.picture');
 
   const picturesData = generatePicturesData();
+
+  const fragment = document.createDocumentFragment();
   for (const picture of picturesData) {
     const domNode = createElementFromPictureItem(picture, pictureTemplateElement);
-    where.appendChild(domNode);
+    fragment.append(domNode);
   }
+
+  where.append(fragment);
 }
 

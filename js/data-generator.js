@@ -88,6 +88,8 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
+let generatedData = [];
+
 /**
   * @description Возвращает функцию, которая генерирует случайное не повторяющееся целове
   *             число из диапазона. Если все числа диапазона были возвращены,
@@ -164,6 +166,10 @@ export function generatePicturesData() {
   const idGenerator = createUniqueRandIntGenerator(1, 25);
   const picGenerator = createUniqueRandIntGenerator(1, 25);
   const commentIdGenerator = createUniqueRandIntGenerator(1, 25 * 30);
-  return Array.from({length: 25}, () => generatePictureObject(idGenerator, picGenerator, commentIdGenerator));
+  generatedData = Array.from({length: 25}, () => generatePictureObject(idGenerator, picGenerator, commentIdGenerator));
+}
+
+export function getPicturesData() {
+  return generatedData;
 }
 

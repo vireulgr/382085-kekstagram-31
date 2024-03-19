@@ -18,6 +18,9 @@ function onLoadCommentsClicked() {
 
   visibleComments = visibleComments > commentsData.length ? commentsData.length : visibleComments;
 
+  if (commentsData.length <= visibleComments) {
+    loadCommentsBtn.classList.add('hidden');
+  }
   shownCommentsEl.textContent = visibleComments;
 
   renderNComments(visibleComments);
@@ -83,4 +86,5 @@ export function clearPost() {
 
   visibleComments = 0;
   loadCommentsBtn.removeEventListener('click', onLoadCommentsClicked);
+  loadCommentsBtn.classList.remove('hidden');
 }

@@ -59,3 +59,12 @@ function onBtnCloseClicked(evt) {
   closeDialog();
 }
 
+// TODO
+export function createDialog() {
+  return {
+    dialogContainer: dialogContainer,
+    closeButton: closeButton,
+    openDialog: openDialog,
+    closeDialog: closeDialog
+  };
+}

@@ -1,7 +1,31 @@
 import { getPicturesData } from './data-generator';
 import { ModalDialog } from './modal-dialog';
 
+const COMMENTS_SHOW_STEP = 5;
+
 const postContainer = document.querySelector('.big-picture');
+const loadCommentsBtn = postContainer.querySelector('.comments-loader');
+const shownCommentsEl = postContainer.querySelector('.social__comment-shown-count');
+const commentsContainerEl = postContainer.querySelector('.social__comments');
+const commentTemplate = commentsContainerEl.querySelector('.social__comment');
+
+let commentsData = []; // все комментарии поста
+let visibleComments = 0; // кол-во видимых комментариев
+
+/** @description обработчик нажатия кнопки "загрузить ещё" для комментариев
+ */
+function onLoadCommentsClicked() {
+  visibleComments += COMMENTS_SHOW_STEP;
+
+  visibleComments = visibleComments > commentsData.length ? commentsData.length : visibleComments;
+
+  if (commentsData.length <= visibleComments) {
+    loadCommentsBtn.classList.add('hidden');
+  }
+  shownCommentsEl.textContent = visibleComments;
+
+  renderNComments(visibleComments);
+}
 
 const dialog = new ModalDialog({
   dialogSelector: '.big-picture',
@@ -29,34 +53,36 @@ export function renderPost(id) {
   const postId = Number.parseInt(id, 10);
   const data = getPicturesData().find((item) => item.id === postId);
 
-  const imageEl = postContainer.querySelector('.big-picture__img>img');
-  imageEl.src = data.url;
+  commentsData = data.comments;
 
-  postContainer.querySelector('.likes-count').textContent = data.likes;
-
-  postContainer.querySelector('.social__comment-shown-count')
-    .textContent = data.comments.length; // TODO пока это будет скрыто
+  postContainer.querySelector('.big-picture__img>img')
+    .src = data.url;
+  postContainer.querySelector('.likes-count')
+    .textContent = data.likes;
+  postContainer.querySelector('.social__caption')
+    .textContent = data.description;
   postContainer.querySelector('.social__comment-total-count')
-    .textContent = data.comments.length; // TODO пока это будет скрыто
+    .textContent = data.comments.length;
 
-  postContainer.querySelector('.social__caption').textContent = data.description;
+  loadCommentsBtn.addEventListener('click', onLoadCommentsClicked);
+  onLoadCommentsClicked();
+}
 
-  // комментарии
-  const commentsContainerEl = postContainer.querySelector('.social__comments');
-  const commentTemplate = commentsContainerEl.querySelector('.social__comment');
+/**
+ * @param {number} quantity количество комментариев
+ */
+function renderNComments(quantity) {
+
+  const commentsToDisplay = commentsData.slice(0, quantity);
 
   const fragment = document.createDocumentFragment();
-  for (const commentItem of data.comments) {
+  for (const commentItem of commentsToDisplay) {
     const commentEl = commentTemplate.cloneNode(true);
     fillComment(commentItem, commentEl);
     fragment.append(commentEl);
   }
   commentsContainerEl.innerHTML = '';
   commentsContainerEl.append(fragment);
-
-  // Прячем блоки счётчика комментариев
-  postContainer.querySelector('.social__comment-count').classList.add('hidden');
-  postContainer.querySelector('.comments-loader').classList.add('hidden');
 }
 
 export function clearPost() {
@@ -65,6 +91,10 @@ export function clearPost() {
   // для содержимого диалогового окна теряется
 
   //postContainer.innerHTML = '';
+
+  visibleComments = 0;
+  loadCommentsBtn.removeEventListener('click', onLoadCommentsClicked);
+  loadCommentsBtn.classList.remove('hidden');
 }
 
 const picturesContainer = document.querySelector('.pictures');

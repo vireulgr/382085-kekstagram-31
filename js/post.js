@@ -1,6 +1,14 @@
 import { getPicturesData } from './data-generator';
+import { ModalDialog } from './modal-dialog';
 
 const postContainer = document.querySelector('.big-picture');
+
+const dialog = new ModalDialog({
+  dialogSelector: '.big-picture',
+  closeButtonSelector: '#picture-cancel',
+  renderFn: renderPost,
+  cleanupFn: clearPost
+});
 
 /**
   * @param {object} data объект комментария
@@ -58,3 +66,30 @@ export function clearPost() {
 
   //postContainer.innerHTML = '';
 }
+
+const picturesContainer = document.querySelector('.pictures');
+// открытие диалога по клику сделано через делегирование обработки
+// событий клика для каждого изображения
+picturesContainer.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('picture__img')) {
+    evt.preventDefault(); // чтобы не переходить по ссылке
+    // dataset.id нужно чтобы содержимое диалога знало откуда
+    // брать данные для отображения
+    dialog.openDialog(evt.target.dataset.id);
+  }
+});
+
+// открытие диалога по Enter сделано через делегирование обработки
+// событий клика для каждой ссылки
+picturesContainer.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Enter'
+    && evt.target.tagName === 'A'
+    && evt.target.classList.contains('picture')) {
+    evt.preventDefault(); // чтобы не переходить по ссылке
+    const id = evt.target.querySelector('.picture__img').dataset.id;
+    // dataset.id нужно чтобы содержимое диалога знало откуда
+    // брать данные для отображения
+    dialog.openDialog(id);
+  }
+});
+

@@ -1,5 +1,6 @@
 import { ModalDialog } from './utils/modal-dialog';
 import { HashTagsValidator } from './utils/validators';
+import { showResultMessage } from './show-send-result';
 
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
@@ -40,14 +41,13 @@ function onFormSubmit(evt) {
   }
 
   const formData = new FormData(uploadFormEl);
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-    method: 'post',
-    body: formData
-  })
-    .then((resp) => resp.json())
-    .then((d) => {
-      console.log(d);
-    });
+
+  const requestInit = { method: 'post', body: formData };
+
+  dialog.closeDialog();
+
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram', requestInit)
+    .then(showResultMessage.bind(null, 'success'), showResultMessage.bind(null, 'error'));
 }
 
 function render() {

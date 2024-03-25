@@ -5,11 +5,16 @@ export class ModalDialog {
   renderContentFn;
   cleanupContentFn;
 
+  onDocumentKeyDownBound;
+  onButtonCloseClickedBound;
+
   constructor({dialogSelector, closeButtonSelector, renderFn, cleanupFn}) {
     this.renderContentFn = renderFn;
     this.cleanupContentFn = cleanupFn;
     this.dialogContainerEl = document.querySelector(dialogSelector);
     this.closeButtonEl = this.dialogContainerEl.querySelector(closeButtonSelector);
+    this.onDocumentKeyDownBound = this.onDocumentKeyDown.bind(this);
+    this.onButtonCloseClickedBound = this.onButtonCloseClicked.bind(this);
   }
 
   /**
@@ -17,8 +22,8 @@ export class ModalDialog {
   closeDialog() {
     this.dialogContainerEl.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    document.removeEventListener('keydown', this.onDocumentKeyDown.bind(this));
-    this.closeButtonEl.removeEventListener('click', this.onBtnCloseClicked.bind(this));
+    document.removeEventListener('keydown', this.onDocumentKeyDownBound);
+    this.closeButtonEl.removeEventListener('click', this.onButtonCloseClickedBound);
     this.cleanupContentFn();
   }
 
@@ -28,8 +33,8 @@ export class ModalDialog {
   openDialog(data) {
     document.body.classList.add('modal-open');
     this.dialogContainerEl.classList.remove('hidden');
-    document.addEventListener('keydown', this.onDocumentKeyDown.bind(this));
-    this.closeButtonEl.addEventListener('click', this.onBtnCloseClicked.bind(this));
+    document.addEventListener('keydown', this.onDocumentKeyDownBound);
+    this.closeButtonEl.addEventListener('click', this.onButtonCloseClickedBound);
     this.renderContentFn(data);
   }
 
@@ -39,7 +44,7 @@ export class ModalDialog {
     }
   }
 
-  onBtnCloseClicked(evt) {
+  onButtonCloseClicked(evt) {
     evt.preventDefault();
     this.closeDialog();
   }

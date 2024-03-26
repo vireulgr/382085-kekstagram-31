@@ -2,6 +2,13 @@
 const MAX_HASH_TAGS_QUANTITY = 5;
 const MAX_HASH_TAG_LENGTH = 20;
 
+/**
+ * Инкапсулирует одну проверку формата хэштега, результат проверки
+ * сохраняет. Если хотя бы один вызов проверки (check) завершился с ошибкой,
+ * считается что проверка не прошла. Это состояние будет храниться до сброса.
+ * Так же хранит собщение об ошибке. Если проверка не пройдена, возвращает это
+ * сообщение как результат вызова getError.
+ */
 class Check {
   passed = true;
   message;
@@ -26,8 +33,11 @@ class Check {
   }
 }
 
+/** Класс для валидации хэштегов
+ */
 export class HashTagsValidator {
 
+  // Проверки для формата тега
   formatChecks = [
     new Check(
       'Хэштег начинается с символа #',
@@ -48,18 +58,19 @@ export class HashTagsValidator {
     ),
   ];
 
+  // ошибки найденные в ходе валидации
   errors = {
-    format: false,
     duplicate: false,
     tooMany: false,
     formatChecks: false
   };
 
-  hashRegExp = new RegExp(`^#[a-zа-яё]{1,${MAX_HASH_TAG_LENGTH}}$`);
-
   // отсюда потом можно забирать валидные хэштеги
   correctTags = new Set();
 
+  /** Валидация строки с тегами. Ошибки и корректные теги сохраняются как
+   * внутреннее состояние
+   */
   process(value) {
     this.reset();
 
@@ -72,7 +83,6 @@ export class HashTagsValidator {
     this.errors.tooMany = (hashTags.length > MAX_HASH_TAGS_QUANTITY);
 
     for (const tag of hashTags) {
-      const isFormat = !this.hashRegExp.test(tag);
       const isDuplicate = this.correctTags.has(tag);
 
       let isFormatChecks = false;
@@ -80,8 +90,7 @@ export class HashTagsValidator {
         isFormatChecks ||= !item.check(tag);
       });
 
-      if (isFormat || isDuplicate || isFormatChecks) {
-        this.errors.format ||= isFormat;
+      if (isDuplicate || isFormatChecks) {
         this.errors.duplicate ||= isDuplicate;
         this.errors.formatChecks ||= isFormatChecks;
         continue;
@@ -90,15 +99,13 @@ export class HashTagsValidator {
       this.correctTags.add(tag);
     }
 
-    return !(this.errors.format || this.errors.duplicate || this.errors.tooMany || this.errors.formatChecks);
+    return !(this.errors.duplicate || this.errors.tooMany || this.errors.formatChecks);
   }
 
+  /** После обработки (process) строит сообщение об ошибках
+   */
   getError() {
     const messages = [];
-    if (this.errors.format) {
-      messages.push('Неверный формат хэштега');
-    }
-
     if (this.errors.duplicate) {
       messages.push('Один и тот же хэштег не может быть использован дважды');
     }
@@ -116,9 +123,11 @@ export class HashTagsValidator {
     return messages.join('; ');
   }
 
+  /** Сбрасывает ошибки
+   */
   reset() {
     this.formatChecks.forEach((item) => item.reset());
-    this.errors = {format: false, duplicate: false, tooMany: false, formatChecks: false};
+    this.errors = {duplicate: false, tooMany: false, formatChecks: false};
     this.correctTags.clear();
   }
 }

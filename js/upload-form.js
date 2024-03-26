@@ -18,7 +18,7 @@ const pristine = new Pristine(uploadFormEl, {
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'p'
-});
+}, false);
 
 
 const imgUploadEl = document.querySelector('.img-upload__input');
@@ -47,7 +47,17 @@ function onFormSubmit(evt) {
   dialog.closeDialog();
 
   fetch('https://31.javascript.htmlacademy.pro/kekstagram', requestInit)
-    .then(showResultMessage.bind(null, 'success'), showResultMessage.bind(null, 'error'));
+    .then(
+      (d) => {
+        if (d.ok) {
+          showResultMessage('success');
+        } else {
+          showResultMessage('error');
+        }
+      },
+      () => {
+        showResultMessage('error');
+      });
 }
 
 function render() {

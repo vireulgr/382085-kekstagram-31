@@ -1,10 +1,21 @@
-
+/**
+ * Простой класс который выполняет операции для скрытия/отображения диалога
+ * При открытии диалога навешивает обработчики Esc, клика кнопки закрытия
+ * При закрытии очищает обработчики и скрывает диалог.
+ */
 export class ModalDialog {
+  // Родительский элемент диалога.
+  // Сюда будет добавляться/отсюда удаляться класс hidden
   dialogContainerEl;
+  // Кнопка закрытия. Сюда добавится обработчик 'click' который
+  // вызовет закрытие и очистку диалога
   closeButtonEl;
+  // Вызывается при открытии диалога
   renderContentFn;
+  // Вызывается при закрытии диалога
   cleanupContentFn;
 
+  // Хранят забинденные обработчики для Esc и клика на кнопку закрытия
   onDocumentKeyDownBound;
   onButtonCloseClickedBound;
 
@@ -18,7 +29,9 @@ export class ModalDialog {
   }
 
   /**
-    */
+   * Скрывает диалог, удаляет обработчики событий, вызывает функцию очистки
+   * для содержимого диалога
+   */
   closeDialog() {
     this.dialogContainerEl.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -28,8 +41,10 @@ export class ModalDialog {
   }
 
   /**
-  * @param {any} data данные для внутренности диалога
-  */
+   * Показывает диалог, добавляет обработчики на кнопку закрытия и на Esc,
+   * вызывает функцию отображения содержимого диалога
+   * @param {any} data данные для внутренности диалога
+   */
   openDialog(data) {
     document.body.classList.add('modal-open');
     this.dialogContainerEl.classList.remove('hidden');
@@ -38,12 +53,18 @@ export class ModalDialog {
     this.renderContentFn(data);
   }
 
+  /**
+   * Обработчик клавиши Escape
+   */
   onDocumentKeyDown(evt) {
     if (evt.key === 'Escape') {
       this.closeDialog();
     }
   }
 
+  /**
+   * Этот обработчик добавляется на кнопку закрытия диалога
+   */
   onButtonCloseClicked(evt) {
     evt.preventDefault();
     this.closeDialog();

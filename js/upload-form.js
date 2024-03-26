@@ -70,10 +70,11 @@ function render() {
 }
 
 function cleanup() {
-  imgUploadEl.value = '';
 
   descrInputEl.removeEventListener('keydown', onInputKeyPressed);
   hashInputEl.removeEventListener('keydown', onInputKeyPressed);
 
   uploadFormEl.removeEventListener('submit', onFormSubmit);
+
+  uploadFormEl.reset();
 }

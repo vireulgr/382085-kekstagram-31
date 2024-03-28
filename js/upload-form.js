@@ -2,6 +2,7 @@ import { ModalDialog } from './utils/modal-dialog';
 import { HashTagsValidator } from './utils/validators';
 import { showResultMessage } from './show-send-result';
 
+const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
@@ -13,12 +14,21 @@ const dialog = new ModalDialog({
   cleanupFn: cleanup
 });
 
+const tagsValidator = new HashTagsValidator();
+
 const pristine = new Pristine(uploadFormEl, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'p'
 }, false);
+
+pristine.addValidator(descrInputEl, () => true, 'Ошибка валидации описания');
+
+pristine.addValidator(
+  hashInputEl,
+  tagsValidator.process.bind(tagsValidator),
+  tagsValidator.getError.bind(tagsValidator));
 
 
 const imgUploadEl = document.querySelector('.img-upload__input');
@@ -40,13 +50,12 @@ function onFormSubmit(evt) {
     return;
   }
 
+  const submitButtonEl = uploadFormEl.querySelector('#upload-submit');
+  submitButtonEl.setAttribute('disabled', '');
+
   const formData = new FormData(uploadFormEl);
-
   const requestInit = { method: 'post', body: formData };
-
-  dialog.closeDialog();
-
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', requestInit)
+  fetch(UPLOAD_PICTURE_URL, requestInit)
     .then(
       (d) => {
         if (d.ok) {
@@ -54,29 +63,21 @@ function onFormSubmit(evt) {
         } else {
           showResultMessage('error');
         }
+        submitButtonEl.removeAttribute('disabled');
       },
       () => {
         showResultMessage('error');
+        submitButtonEl.removeAttribute('disabled');
       });
 }
 
 function render() {
-  // nouislider
-  // <div class="effect-level__slider"></div>
-  // <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
 
   descrInputEl.addEventListener('keydown', onInputKeyPressed);
   hashInputEl.addEventListener('keydown', onInputKeyPressed);
 
   uploadFormEl.addEventListener('submit', onFormSubmit);
 
-  pristine.addValidator(descrInputEl, () => true, 'Ошибка валидации описания');
-
-  const tagsValidator = new HashTagsValidator();
-  pristine.addValidator(
-    hashInputEl,
-    tagsValidator.process.bind(tagsValidator),
-    tagsValidator.getError.bind(tagsValidator));
 }
 
 function cleanup() {
@@ -87,4 +88,6 @@ function cleanup() {
   uploadFormEl.removeEventListener('submit', onFormSubmit);
 
   uploadFormEl.reset();
+  tagsValidator.reset();
+  pristine.reset();
 }

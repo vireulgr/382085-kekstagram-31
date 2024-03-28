@@ -1,8 +1,9 @@
+import { fetchPicturesData } from './data-storage';
 import { renderPicturesList } from './pictures-list';
-import { generatePicturesData } from './data-generator';
-import './modal-dialog';
+import './post';
+import './upload-form';
 
-generatePicturesData();
-
-renderPicturesList();
-
+fetchPicturesData()
+  .then(() => {
+    renderPicturesList();
+  });

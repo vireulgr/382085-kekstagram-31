@@ -1,4 +1,4 @@
-import { getPicturesData } from './data-generator';
+import { getPicturesData } from './data-storage';
 
 /**
 */

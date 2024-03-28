@@ -59,6 +59,51 @@ function extractDigits(arg) {
   }
 }
 
+
+/**
+  */
+function testInWorkTime() {
+  const testData = [
+    {args: ['08:00', '17:30', '14:00', 90], expected: true},
+    {args: ['8:0', '10:0', '8:0', 120], expected: true},
+    {args: ['08:00', '14:30', '14:00', 90], expected: false},
+    {args: ['14:00', '17:30', '08:0', 90], expected: false},
+    {args: ['8:00', '17:30', '08:00', 900], expected: false},
+    {args: ['8:0', '17:30', '8:0', 480], expected: true},
+    {args: ['9:0', '18:30', '8:0', 480], expected: false},
+    {args: ['09:00', '18:30', '09:00', 480], expected: true},
+  ];
+
+  testFunction(testData, inWorkTime);
+}
+
+/**
+  * @description Переводит строку в формате HH:mm в количество минут
+  *               с 00:00
+  * @param {string} aTime - строка со временем в формате HH:mm
+  * @return {number} - количество минут c 00:00, соответствующее переданному времени
+  */
+function timeToMinutes(aTime) {
+  const [hours, minutes] = aTime.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+/**
+* @param {string} start - начало рабочего дня
+* @param {string} end - конец рабочего дня
+* @param {string} eventStart - начало встречи
+* @param {number} eventDuration - продолжительность встречи в минутах
+* @return {boolean} - помещается ли встреча в рабочий день
+*/
+function inWorkTime(start, end, eventStart, eventDuration) {
+
+  const workDayStart = timeToMinutes(start);
+  const workDayEnd = timeToMinutes(end);
+  const eventStartMinutes = timeToMinutes(eventStart);
+  const eventEnd = eventStartMinutes + eventDuration;
+  return eventEnd <= workDayEnd && eventStartMinutes >= workDayStart;
+}
+
 {
   const arg1 = '1 бутылка кефира, 0.5 батона';
   extractDigits(arg1);

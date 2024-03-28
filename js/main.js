@@ -1,4 +1,8 @@
-import { render } from './render';
+import { renderPicturesList } from './pictures-list';
+import { generatePicturesData } from './data-generator';
+import './modal-dialog';
 
-render(document.querySelector('ul.posts'));
+generatePicturesData();
+
+renderPicturesList();
 

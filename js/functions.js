@@ -1,3 +1,51 @@
+
+/**
+  */
+export function testInWorkTime() {
+  const testData = [
+    {args: ['08:00', '17:30', '14:00', 90], expected: true},
+    {args: ['8:0', '10:0', '8:0', 120], expected: true},
+    {args: ['08:00', '14:30', '14:00', 90], expected: false},
+    {args: ['14:00', '17:30', '08:0', 90], expected: false},
+    {args: ['8:00', '17:30', '08:00', 900], expected: false},
+    {args: ['8:0', '17:30', '8:0', 480], expected: true},
+    {args: ['9:0', '18:30', '8:0', 480], expected: false},
+    {args: ['09:00', '18:30', '09:00', 480], expected: true},
+  ];
+
+  testFunction(testData, inWorkTime);
+}
+
+/**
+  * @description Тестирует на тестовых данных
+  * @param {{args: any[], result: any}} testData - тестовые данные и ожидаемый результат
+  * @param {Function} aFunction - функция, которую нужно протестировать
+  * @return {void} ничего
+*/
+function testFunction(testData, aFunction) {
+  const testLogText = [];
+  for (const testCase of testData) {
+    const result = aFunction(...(testCase.args));
+
+    const argsStr = testCase.args.toString().padStart(30);
+    const resultStr = result.toString().padStart(10);
+    testLogText.push(`args: ${argsStr}, got ${resultStr} expected: ${testCase.expected}`);
+  }
+  const testLog = document.createElement('p');
+
+  const styles = [
+    'white-space: pre;',
+    'font-family: "Consolas", "DejaVu Sans Mono", "SF Mono", monospace;',
+    'width: fit-content;',
+    'margin: 10px auto;',
+  ];
+  testLog.style = styles.join(' ');
+  testLog.textContent = testLogText.join('\r\n');
+  document.body.insertBefore(testLog, document.body.children[0]);
+}
+
+/**
+  */
 function checkLength(aString, maxLength) {
   return aString.length <= maxLength;
 }
@@ -59,7 +107,6 @@ function extractDigits(arg) {
   }
 }
 
-
 /**
   */
 function testInWorkTime() {
@@ -107,16 +154,19 @@ function inWorkTime(start, end, eventStart, eventDuration) {
 {
   const arg1 = '1 бутылка кефира, 0.5 батона';
   extractDigits(arg1);
-  //console.log(`Извлечение цифр со строкой ${arg1}, результат: ${extractDigits(arg1)}`);
+  // console.log(`Извлечение цифр со строкой ${arg1}, результат: ${extractDigits(arg1)}`);
 }
 {
   const arg1 = 'Hello world!';
   const arg2 = 20;
   checkLength(arg1, arg2);
-  //console.log(`Проверка длины строки аргументы: ${arg1} ${arg2}, результат: ${checkLength(arg1, arg2)}`);
+  // console.log(`Проверка длины строки аргументы: ${arg1} ${arg2}, результат: ${checkLength(arg1, arg2)}`);
 }
 {
   const arg1 = ' а роза упала на лапу азора';
   isPalindrome(arg1);
   //console.log(`Проверка на палиндром строки ${arg1}, результат ${isPalindrome(arg1)}`);
+}
+{
+  //testInWorkTime();
 }

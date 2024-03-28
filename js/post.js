@@ -1,5 +1,5 @@
 import { ModalDialog } from './utils/modal-dialog';
-import { getPicturesData } from './data-generator';
+import { getPicturesData } from './data-storage';
 
 const COMMENTS_SHOW_STEP = 5;
 

@@ -1,11 +1,13 @@
-import { ModalDialog } from './utils/modal-dialog';
-import { HashTagsValidator } from './utils/validators';
-import { showResultMessage } from './show-send-result';
+import { ModalDialog } from '../utils/modal-dialog';
+import { HashTagsValidator } from '../utils/validators';
+import { showResultMessage } from '../show-send-result';
+import './picture-effects';
 
 const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
+//const imagePreview = uploadFormEl.querySelector('.img-upload__preview > img');
 
 const dialog = new ModalDialog({
   dialogSelector: '.img-upload__overlay',
@@ -33,8 +35,10 @@ pristine.addValidator(
 
 const imgUploadEl = document.querySelector('.img-upload__input');
 
-imgUploadEl.addEventListener('change', () => {
-  dialog.openDialog();
+imgUploadEl.addEventListener('change', (evt) => {
+  // не знаю как по уму подставить изображение в качестве img-upload__preview
+  const imagePath = evt.target.files[0].name;
+  dialog.openDialog(imagePath);
 });
 
 
@@ -71,13 +75,14 @@ function onFormSubmit(evt) {
       });
 }
 
-function render() {
+function render(imgUploadValue) {
 
   descrInputEl.addEventListener('keydown', onInputKeyPressed);
   hashInputEl.addEventListener('keydown', onInputKeyPressed);
 
   uploadFormEl.addEventListener('submit', onFormSubmit);
 
+  //imagePreview.src = imgUploadValue; // это не работает
 }
 
 function cleanup() {
@@ -86,6 +91,8 @@ function cleanup() {
   hashInputEl.removeEventListener('keydown', onInputKeyPressed);
 
   uploadFormEl.removeEventListener('submit', onFormSubmit);
+
+  //imagePreview.src = '';
 
   uploadFormEl.reset();
   tagsValidator.reset();

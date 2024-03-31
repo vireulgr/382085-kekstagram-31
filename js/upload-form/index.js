@@ -1,13 +1,13 @@
 import { ModalDialog } from '../utils/modal-dialog';
 import { HashTagsValidator } from '../utils/validators';
 import { showResultMessage } from '../show-send-result';
-import './picture-effects';
+import * as effects from './picture-effects';
 
 const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
-//const imagePreview = uploadFormEl.querySelector('.img-upload__preview > img');
+const imagePreview = uploadFormEl.querySelector('.img-upload__preview > img');
 
 const dialog = new ModalDialog({
   dialogSelector: '.img-upload__overlay',
@@ -36,9 +36,19 @@ pristine.addValidator(
 const imgUploadEl = document.querySelector('.img-upload__input');
 
 imgUploadEl.addEventListener('change', (evt) => {
-  // не знаю как по уму подставить изображение в качестве img-upload__preview
-  const imagePath = evt.target.files[0].name;
-  dialog.openDialog(imagePath);
+  const file = evt.target.files[0];
+  if (!file.type.startsWith('image/')) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = (e) => {
+    const fileBase64 = e.target.result;
+
+    dialog.openDialog(fileBase64);
+  };
+
+  reader.readAsDataURL(file);
 });
 
 
@@ -75,14 +85,15 @@ function onFormSubmit(evt) {
       });
 }
 
-function render(imgUploadValue) {
+function render(base64Image) {
 
   descrInputEl.addEventListener('keydown', onInputKeyPressed);
   hashInputEl.addEventListener('keydown', onInputKeyPressed);
 
   uploadFormEl.addEventListener('submit', onFormSubmit);
 
-  //imagePreview.src = imgUploadValue; // это не работает
+  imagePreview.src = base64Image;
+  effects.init(base64Image);
 }
 
 function cleanup() {
@@ -92,8 +103,7 @@ function cleanup() {
 
   uploadFormEl.removeEventListener('submit', onFormSubmit);
 
-  //imagePreview.src = '';
-
+  effects.cleanup();
   uploadFormEl.reset();
   tagsValidator.reset();
   pristine.reset();

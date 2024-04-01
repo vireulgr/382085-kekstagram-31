@@ -43,4 +43,6 @@ export function init() {
 export function cleanup() {
   scaleSmallerEl.removeEventListener('click', onSmallerButtonPressed);
   scaleBiggerEl.removeEventListener('click', onBiggerButtonPressed);
+  imagePreviewScale = 100;
+  setImageScale();
 }

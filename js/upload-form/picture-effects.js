@@ -34,15 +34,16 @@ let currentEffect = EFFECTS[0];
  * @param {Effect}} effect новый выбранный эффект
  */
 function setActiveEffect(effect) {
+  currentEffect = effect;
+  sliderEl.noUiSlider.updateOptions(effectToSliderOptions(effect));
   if (effect.selector === '#effect-none') {
     sliderContainerEl.classList.add('hidden');
     sliderEl.noUiSlider.off();
+    onSliderUpdate(0);
   } else {
     sliderContainerEl.classList.remove('hidden');
     sliderEl.noUiSlider.on('update', onSliderUpdate);
   }
-  currentEffect = effect;
-  sliderEl.noUiSlider.updateOptions(effectToSliderOptions(effect));
 }
 
 /**
@@ -57,7 +58,7 @@ function effectToSliderOptions(effect) {
       max: effect.max
     },
     step: effect.step,
-    start: effect.min
+    start: effect.max
   };
 }
 
@@ -137,6 +138,8 @@ export function cleanup() {
     document.querySelector(item.selector)
       .removeEventListener('click', onEffectClick);
   });
+
+  setActiveEffect(EFFECTS[0]);
 
   sliderEl.noUiSlider.off();
   sliderEl.noUiSlider.destroy();

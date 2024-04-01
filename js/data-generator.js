@@ -1,4 +1,4 @@
-import { getRandArrayElem, getRandInt } from './utils';
+import { getRandArrayElem, getRandInt, createUniqueRandIntGenerator } from './utils';
 
 /* Пример объекта PictureItem
   const example = {
@@ -88,35 +88,6 @@ const MESSAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
-
-/**
-  * @description Возвращает функцию, которая генерирует случайное не повторяющееся целове
-  *             число из диапазона. Если все числа диапазона были возвращены,
-  * @param {number} from начало отрезка (включительно)
-  * @param {number} to конец отрезка (включительно)
-  * @returns {number} уникальное случайное число из отрезка
-  */
-function createUniqueRandIntGenerator(from, to) {
-  const _from = Math.min(Math.floor(from), Math.floor(to));
-  const _to = Math.max(Math.floor(from), Math.floor(to));
-
-  const prevValues = new Set();
-  return () => {
-    //console.log(prevValues.size);
-    if (prevValues.size >= _to - _from + 1) {
-      //console.error('Все значения закончились');
-      return null;
-    }
-    let newVal = getRandInt(_from, _to);
-    while (prevValues.has(newVal)) {
-      newVal = getRandInt(_from, _to);
-    }
-
-    prevValues.add(newVal);
-
-    return newVal;
-  };
-}
 
 /**
   * @description Генерирует сообщение для комментария

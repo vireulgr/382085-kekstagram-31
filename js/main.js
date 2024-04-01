@@ -1,9 +1,9 @@
 import { fetchPicturesData } from './data-storage';
-import { renderPicturesList } from './pictures-list';
 import './post';
 import './upload-form';
+import * as filters from './filters';
 
 fetchPicturesData()
   .then(() => {
-    renderPicturesList();
+    filters.init();
   });

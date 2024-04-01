@@ -23,6 +23,10 @@ const PICTURES_DATA_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/data
 */
 let picturesData = [];
 
+/**
+* @type PictureItem[]
+*/
+let filteredPicturesData = [];
 
 export function fetchPicturesData() {
   return fetch(PICTURES_DATA_URL)
@@ -43,5 +47,16 @@ export function fetchPicturesData() {
 
 export function getPicturesData() {
   return picturesData;
+}
+
+/**
+* @param {PictureItem[]} newData - отфильтрованные данные
+*/
+export function setFilteredPicturesData(newData) {
+  filteredPicturesData = newData;
+}
+
+export function getFilteredPicturesData() {
+  return filteredPicturesData;
 }
 

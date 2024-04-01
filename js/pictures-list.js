@@ -1,4 +1,4 @@
-import { getPicturesData } from './data-storage';
+import { getFilteredPicturesData } from './data-storage';
 
 /**
 */
@@ -19,7 +19,18 @@ function fillPictureItem(data, template) {
 }
 
 /**
-*
+* Удаляет все картинки из контейнера
+*/
+export function cleanupPictures() {
+  const picturesEls = document.querySelectorAll('.pictures .picture');
+  for (const el of picturesEls) {
+    el.remove();
+  }
+}
+
+/**
+* Создаёт элемент картинки по шаблону, заполняет данными и добавляет в контейнер
+* Данные берёт фильтрованные, из data-storage
 */
 export function renderPicturesList() {
   const picturesContainer = document.querySelector('.pictures');
@@ -27,7 +38,7 @@ export function renderPicturesList() {
   const pictureTemplateElement = pictureTemplateContent.querySelector('.picture');
 
   const fragment = document.createDocumentFragment();
-  const data = getPicturesData();
+  const data = getFilteredPicturesData();
   for (const picture of data) {
     const pictureEl = pictureTemplateElement.cloneNode(true);
     fillPictureItem(picture, pictureEl);

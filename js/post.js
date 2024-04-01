@@ -1,5 +1,5 @@
 import { ModalDialog } from './utils/modal-dialog';
-import { getPicturesData } from './data-storage';
+import { getFilteredPicturesData } from './data-storage';
 
 const COMMENTS_SHOW_STEP = 5;
 
@@ -51,7 +51,7 @@ function fillComment(data, template) {
   */
 export function renderPost(id) {
   const postId = Number.parseInt(id, 10);
-  const data = getPicturesData().find((item) => item.id === postId);
+  const data = getFilteredPicturesData().find((item) => item.id === postId);
 
   commentsData = data.comments;
 

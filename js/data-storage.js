@@ -1,5 +1,3 @@
-//import { showResultMessage } from './show-send-result';
-import { generatePicturesData } from './data-generator';
 const PICTURES_DATA_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/data';
 /**
   * @typedef {Object} CommentItem
@@ -30,14 +28,10 @@ export function fetchPicturesData() {
       if (d.ok) {
         return d.json();
       }
-      throw(d);
+      throw new Error(d);
     })
     .then((d) => {
       picturesData = d;
-    })
-    .catch(() => {
-      picturesData = generatePicturesData();
-      //showResultMessage('error');
     });
 }
 

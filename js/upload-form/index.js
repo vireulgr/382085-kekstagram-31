@@ -72,17 +72,16 @@ function onFormSubmit(evt) {
   fetch(UPLOAD_PICTURE_URL, requestInit)
     .then(
       (d) => {
-        if (d.ok) {
-          showResultMessage('success');
-        } else {
-          showResultMessage('error');
+        submitButtonEl.removeAttribute('disabled');
+        if (!d.ok) {
+          throw new Error();
         }
-        submitButtonEl.removeAttribute('disabled');
-      },
-      () => {
-        showResultMessage('error');
-        submitButtonEl.removeAttribute('disabled');
-      });
+        showResultMessage('success');
+        dialog.closeDialog();
+      })
+    .catch(() => {
+      showResultMessage('error');
+    });
 }
 
 function render(base64Image) {

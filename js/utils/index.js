@@ -1,10 +1,10 @@
 /**
  */
-function debounce(cb, timeout) {
+function debounce(cb, timeInterval) {
   let timerId;
   return (...args) => {
     clearTimeout(timerId);
-    timerId = setTimeout(cb.apply(this, args), timeout);
+    timerId = setTimeout(() => cb.apply(this, args), timeInterval);
   };
 }
 
@@ -55,14 +55,6 @@ function createUniqueRandIntGenerator(from, to) {
     prevValues.add(newVal);
 
     return newVal;
-  };
-}
-
-function debounce(cb, timeInterval) {
-  let timerId;
-  return (...rest) => {
-    clearTimeout(timerId);
-    timerId = setTimeout(() => cb.apply(this, rest), timeInterval);
   };
 }
 

@@ -113,7 +113,7 @@ picturesContainer.addEventListener('click', (evt) => {
 // событий клика для каждой ссылки
 picturesContainer.addEventListener('keydown', (evt) => {
   if (evt.key === 'Enter'
-    && evt.target.tagName === 'A'
+    && evt.target.tagName.toLowerCase === 'a'
     && evt.target.classList.contains('picture')) {
     evt.preventDefault(); // чтобы не переходить по ссылке
     const id = evt.target.querySelector('.picture__img').dataset.id;

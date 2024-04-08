@@ -9,7 +9,6 @@ const debouncedFilterHandler = debounce((filter) => {
 
   switch (filter) {
     case 'filterRandom': {
-      console.log('random filter');
       const intGenerator = createUniqueRandIntGenerator(1, 10);
 
       const picturesData = getPicturesData();
@@ -20,7 +19,6 @@ const debouncedFilterHandler = debounce((filter) => {
       break;
     }
     case 'filterDiscussed': {
-      console.log('discussed filter');
       const sorted = getPicturesData().slice().sort((a, b) => {
         if (!a.comments) {
           return 1;
@@ -36,7 +34,6 @@ const debouncedFilterHandler = debounce((filter) => {
     }
     case 'filterDefault':
     default:
-      console.log('default filter');
       setFilteredPicturesData(getPicturesData());
   }
 
@@ -75,6 +72,7 @@ function onFilterDiscussedClick() {
 }
 
 /**
+ * делает кнопку фильтра active, убирает у остальных кнопок active
 */
 function setCurrentFilter(filter) {
   for (const key in FILTERS) {

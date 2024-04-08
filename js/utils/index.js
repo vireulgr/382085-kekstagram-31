@@ -49,5 +49,12 @@ function createUniqueRandIntGenerator(from, to) {
   };
 }
 
+function debounce(cb, timeInterval) {
+  let timerId;
+  return (...rest) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => cb.apply(this, rest), timeInterval);
+  };
+}
 
-export { getRandArrayElem, getRandInt, createUniqueRandIntGenerator };
+export { getRandArrayElem, getRandInt, createUniqueRandIntGenerator, debounce };

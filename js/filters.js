@@ -12,7 +12,7 @@ const debouncedFilterHandler = debounce((filter) => {
       const intGenerator = createUniqueRandIntGenerator(1, 10);
 
       const picturesData = getPicturesData();
-      const newPicturesData = Array.from({length: 10}, () => picturesData[intGenerator()]);
+      const newPicturesData = Array.from({ length: 10 }, () => picturesData[intGenerator()]);
 
       setFilteredPicturesData(newPicturesData);
 
@@ -97,6 +97,7 @@ export function init() {
   onFilterDefaultClick();
 }
 
+// ????
 export function cleanup() {
   for (const key in FILTERS) {
     const item = FILTERS[key];

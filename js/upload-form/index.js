@@ -3,15 +3,19 @@ import { HashTagsValidator } from '../utils/validators';
 import { showResultMessage } from '../show-send-result';
 import * as effects from './picture-effects';
 
+const DESCRIPTION_MAX_LENGTH = 140;
 const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
 const imagePreview = uploadFormEl.querySelector('.img-upload__preview > img');
 
+let canClose = true;
+
 const dialog = new ModalDialog({
   dialogSelector: '.img-upload__overlay',
   closeButtonSelector: '#upload-cancel',
+  onClose: onClose,
   renderFn: render,
   cleanupFn: cleanup
 });
@@ -25,7 +29,10 @@ const pristine = new Pristine(uploadFormEl, {
   errorTextTag: 'p'
 }, false);
 
-pristine.addValidator(descrInputEl, () => true, 'Ошибка валидации описания');
+pristine.addValidator(
+  descrInputEl,
+  (value) => value.length <= DESCRIPTION_MAX_LENGTH,
+  `Текст описания содержит больше ${DESCRIPTION_MAX_LENGTH} символов`);
 
 pristine.addValidator(
   hashInputEl,
@@ -60,6 +67,7 @@ function onInputKeyPressed(evt) {
 
 function onFormSubmit(evt) {
   evt.preventDefault();
+  evt.stopPropagation();
   if (!pristine.validate()) {
     return;
   }
@@ -68,25 +76,27 @@ function onFormSubmit(evt) {
   submitButtonEl.setAttribute('disabled', '');
 
   const formData = new FormData(uploadFormEl);
-  const requestInit = { method: 'post', body: formData };
+  const requestInit = { method: 'post', body: formData, credentials: 'same-origin' };
   fetch(UPLOAD_PICTURE_URL, requestInit)
-    .then(
-      (response) => {
-        if (response.ok) {
-          showResultMessage('success');
-        } else {
-          showResultMessage('error');
-        }
-        submitButtonEl.removeAttribute('disabled');
-      },
-      () => {
-        showResultMessage('error');
-        submitButtonEl.removeAttribute('disabled');
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response);
+      }
+      showResultMessage('success');
+      dialog.closeDialog();
+    })
+    .catch(() => {
+      showResultMessage('error', () => {
+        canClose = true;
       });
+      canClose = false;
+    })
+    .finally(() => {
+      submitButtonEl.removeAttribute('disabled');
+    });
 }
 
 function render(base64Image) {
-
   descrInputEl.addEventListener('keydown', onInputKeyPressed);
   hashInputEl.addEventListener('keydown', onInputKeyPressed);
 
@@ -107,4 +117,8 @@ function cleanup() {
   uploadFormEl.reset();
   tagsValidator.reset();
   pristine.reset();
+}
+
+function onClose() {
+  return canClose;
 }

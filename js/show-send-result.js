@@ -1,11 +1,14 @@
 let messageEl = null;
 let closeButton = null;
+let onCloseCb = null;
 
 function closeResultMessage() {
   messageEl.remove();
   closeButton.removeEventListener('click', onCloseButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   messageEl.removeEventListener('click', onMessageOverlayClick);
+
+  onCloseCb?.();
 }
 
 function onMessageOverlayClick(evt) {
@@ -18,6 +21,7 @@ function onMessageOverlayClick(evt) {
 
 function onDocumentKeydown(evt) {
   if (evt.key === 'Escape') {
+    evt.stopPropagation();
     closeResultMessage();
   }
 }
@@ -26,7 +30,7 @@ function onCloseButtonClick() {
   closeResultMessage();
 }
 
-export function showResultMessage(result) {
+export function showResultMessage(result, closeCb) {
 
   let templateSel, elementSel, buttonSel;
   switch (result) {
@@ -51,6 +55,9 @@ export function showResultMessage(result) {
   messageEl.addEventListener('click', onMessageOverlayClick);
   closeButton = messageEl.querySelector(buttonSel);
   closeButton.addEventListener('click', onCloseButtonClick);
+  closeButton.focus();
   document.addEventListener('keydown', onDocumentKeydown);
   document.body.append(messageEl);
+
+  onCloseCb = closeCb;
 }

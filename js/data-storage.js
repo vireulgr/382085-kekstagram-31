@@ -24,14 +24,14 @@ let picturesData = [];
 
 export function fetchPicturesData() {
   return fetch(PICTURES_DATA_URL)
-    .then((d) => {
-      if (d.ok) {
-        return d.json();
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
       }
-      throw new Error(d);
+      throw new Error(response);
     })
-    .then((d) => {
-      picturesData = d;
+    .then((respData) => {
+      picturesData = respData;
     });
 }
 

@@ -3,7 +3,7 @@ import { HashTagsValidator } from '../utils/validators';
 import { showResultMessage } from '../show-send-result';
 import * as effects from './picture-effects';
 
-const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const UPLOAD_PICTURE_URL = 'https://a31.javascript.htmlacademy.pro/kekstagram';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
@@ -70,15 +70,14 @@ function onFormSubmit(evt) {
   const formData = new FormData(uploadFormEl);
   const requestInit = { method: 'post', body: formData };
   fetch(UPLOAD_PICTURE_URL, requestInit)
-    .then(
-      (d) => {
-        submitButtonEl.removeAttribute('disabled');
-        if (!d.ok) {
-          throw new Error();
-        }
-        showResultMessage('success');
-        dialog.closeDialog();
-      })
+    .then((response) => {
+      submitButtonEl.removeAttribute('disabled');
+      if (!response.ok) {
+        throw new Error(response);
+      }
+      showResultMessage('success');
+      dialog.closeDialog();
+    })
     .catch(() => {
       showResultMessage('error');
     });

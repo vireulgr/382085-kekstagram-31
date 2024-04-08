@@ -57,6 +57,7 @@ export class ModalDialog {
    * Обработчик клавиши Escape
    */
   onDocumentKeyDown(evt) {
+    console.log('dialog');
     if (evt.key === 'Escape') {
       this.closeDialog();
     }

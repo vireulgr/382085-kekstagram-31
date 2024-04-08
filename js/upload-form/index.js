@@ -97,7 +97,6 @@ function onFormSubmit(evt) {
 }
 
 function render(base64Image) {
-
   descrInputEl.addEventListener('keydown', onInputKeyPressed);
   hashInputEl.addEventListener('keydown', onInputKeyPressed);
 

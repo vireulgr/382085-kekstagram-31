@@ -15,9 +15,9 @@ function setImageScale() {
 }
 
 /**
- * Обработчик клика на уменьшение масшттаба
+ * Обработчик клика на уменьшение масштаба
  */
-function onSmallerButtonPressed() {
+function onSmallerButtonClicked() {
   imagePreviewScale = imagePreviewScale <= 25 ? 25 : imagePreviewScale - 25;
   setImageScale();
 }
@@ -25,7 +25,7 @@ function onSmallerButtonPressed() {
 /**
  * Обработчик клика на увеличение масшттаба
  */
-function onBiggerButtonPressed() {
+function onBiggerButtonClicked() {
   imagePreviewScale = imagePreviewScale >= 100 ? 100 : imagePreviewScale + 25;
   setImageScale();
 }
@@ -34,16 +34,16 @@ function onBiggerButtonPressed() {
  * должна вызываться перед отображением диалога
  */
 export function init() {
-  scaleSmallerEl.addEventListener('click', onSmallerButtonPressed);
-  scaleBiggerEl.addEventListener('click', onBiggerButtonPressed);
+  scaleSmallerEl.addEventListener('click', onSmallerButtonClicked);
+  scaleBiggerEl.addEventListener('click', onBiggerButtonClicked);
 }
 
 /**
  * должна вызываться перед закрытием диалога для освобождения ресурсов
  */
 export function cleanup() {
-  scaleSmallerEl.removeEventListener('click', onSmallerButtonPressed);
-  scaleBiggerEl.removeEventListener('click', onBiggerButtonPressed);
+  scaleSmallerEl.removeEventListener('click', onSmallerButtonClicked);
+  scaleBiggerEl.removeEventListener('click', onBiggerButtonClicked);
   imagePreviewScale = 100;
   setImageScale();
 }

@@ -71,8 +71,8 @@ function onFormSubmit(evt) {
   const requestInit = { method: 'post', body: formData };
   fetch(UPLOAD_PICTURE_URL, requestInit)
     .then(
-      (d) => {
-        if (d.ok) {
+      (response) => {
+        if (response.ok) {
           showResultMessage('success');
         } else {
           showResultMessage('error');

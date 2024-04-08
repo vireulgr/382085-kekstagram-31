@@ -14,18 +14,22 @@ export class ModalDialog {
   renderContentFn;
   // Вызывается при закрытии диалога
   cleanupContentFn;
+  // вызывается перед закрытием. Если возвращает true - диалог закрывается
+  // Иначе не закрывается
+  onCloseCb;
 
   // Хранят забинденные обработчики для Esc и клика на кнопку закрытия
   onDocumentKeyDownBound;
   onButtonCloseClickedBound;
 
-  constructor({dialogSelector, closeButtonSelector, renderFn, cleanupFn}) {
+  constructor({dialogSelector, closeButtonSelector, renderFn, cleanupFn, onClose}) {
     this.renderContentFn = renderFn;
     this.cleanupContentFn = cleanupFn;
     this.dialogContainerEl = document.querySelector(dialogSelector);
     this.closeButtonEl = this.dialogContainerEl.querySelector(closeButtonSelector);
     this.onDocumentKeyDownBound = this.onDocumentKeyDown.bind(this);
     this.onButtonCloseClickedBound = this.onButtonCloseClicked.bind(this);
+    this.onCloseCb = onClose;
   }
 
   /**
@@ -33,6 +37,9 @@ export class ModalDialog {
    * для содержимого диалога
    */
   closeDialog() {
+    if (!!this.onCloseCb && !this.onCloseCb()) {
+      return;
+    }
     this.dialogContainerEl.classList.add('hidden');
     document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', this.onDocumentKeyDownBound);
@@ -57,7 +64,6 @@ export class ModalDialog {
    * Обработчик клавиши Escape
    */
   onDocumentKeyDown(evt) {
-    console.log('dialog');
     if (evt.key === 'Escape') {
       this.closeDialog();
     }

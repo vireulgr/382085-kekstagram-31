@@ -9,7 +9,8 @@ let imagePreviewScale = 100;
  * общая логика обновления масштаба изображения
  */
 function setImageScale() {
-  scaleInputEl.value = `${imagePreviewScale}%`;
+  const scaleString = `${imagePreviewScale}%`;
+  scaleInputEl.setAttribute('value', scaleString);
   bigImageEl.style.transform = `scale(${imagePreviewScale / 100})`;
 }
 

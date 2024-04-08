@@ -1,3 +1,12 @@
+/**
+ */
+function debounce(cb, timeout) {
+  let timerId;
+  return (...args) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(cb.apply(this, args), timeout);
+  };
+}
 
 /**
   * @description Генерирует случайное целое число из отрезка. Оба конца отрезка достигаются.
@@ -50,4 +59,4 @@ function createUniqueRandIntGenerator(from, to) {
 }
 
 
-export { getRandArrayElem, getRandInt, createUniqueRandIntGenerator };
+export { getRandArrayElem, getRandInt, createUniqueRandIntGenerator, debounce };

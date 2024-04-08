@@ -5,8 +5,6 @@ import { cleanupPictures, renderPicturesList } from './pictures-list';
 // TODO debounce
 
 
-let currentFilterId = 'filterDefault';
-
 const FILTERS = {
   filterDefault: { htmlElement: document.querySelector('#filter-default'), eventHandler: onFilterDefaultClick },
   filterRandom: { htmlElement: document.querySelector('#filter-random'), eventHandler: onFilterRandomClick },
@@ -64,12 +62,12 @@ function onFilterDiscussedClick() {
 }
 
 /**
+ * делает кнопку фильтра active, убирает у остальных кнопок active
 */
 function setCurrentFilter(filter) {
-  currentFilterId = filter;
   for (const key in FILTERS) {
     const item = FILTERS[key];
-    if (key === currentFilterId) {
+    if (key === filter) {
       item.htmlElement.classList.add('img-filters__button--active');
     } else {
       item.htmlElement.classList.remove('img-filters__button--active');

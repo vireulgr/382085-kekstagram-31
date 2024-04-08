@@ -79,19 +79,20 @@ function onFormSubmit(evt) {
   const requestInit = { method: 'post', body: formData, credentials: 'same-origin' };
   fetch(UPLOAD_PICTURE_URL, requestInit)
     .then((response) => {
-      submitButtonEl.removeAttribute('disabled');
       if (!response.ok) {
         throw new Error(response);
       }
-      showResultMessage('success', () => {
-        dialog.closeDialog();
-      });
+      showResultMessage('success');
+      dialog.closeDialog();
     })
     .catch(() => {
       showResultMessage('error', () => {
         canClose = true;
       });
       canClose = false;
+    })
+    .finally(() => {
+      submitButtonEl.removeAttribute('disabled');
     });
 }
 

@@ -41,17 +41,17 @@ export class HashTagsValidator {
   formatChecks = [
     new Check(
       'Хэштег начинается с символа #',
-      (v) => v.startsWith('#')),
+      (inputValue) => inputValue.startsWith('#')),
     new Check(
       'Хэштег не может состоять только из одной решётки',
-      (v) => v !== '#'),
+      (inputValue) => inputValue !== '#'),
     new Check(
       `Максимальная длина одного хэштега ${MAX_HASH_TAG_LENGTH} символов, включая решётку`,
-      (v) => v.length <= MAX_HASH_TAG_LENGTH),
+      (inputValue) => inputValue.length <= MAX_HASH_TAG_LENGTH),
     new Check('Строка после решётки должна состоять только из букв и чисел',
-      (v) => {
-        if (v.startsWith('#')) { // это чтобы не путать с "Хэштег начинается с..."
-          return /^#[a-zа-яё]+$/.test(v); // не путать с "Максимальная длина..."
+      (inputValue) => {
+        if (inputValue.startsWith('#')) { // это чтобы не путать с "Хэштег начинается с..."
+          return /^#[a-zа-яё]+$/.test(inputValue); // не путать с "Максимальная длина..."
         }
         return true;
       }

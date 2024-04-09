@@ -55,7 +55,6 @@ export function showResultMessage(result, closeCb) {
   messageEl.addEventListener('click', onMessageOverlayClick);
   closeButton = messageEl.querySelector(buttonSel);
   closeButton.addEventListener('click', onCloseButtonClick);
-  closeButton.focus();
   document.addEventListener('keydown', onDocumentKeydown);
   document.body.append(messageEl);
 

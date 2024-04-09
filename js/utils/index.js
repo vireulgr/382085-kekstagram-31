@@ -15,9 +15,9 @@ function debounce(cb, timeInterval) {
   * @returns {number} случайное число из отрезка
   */
 function getRandInt(from, to) {
-  const _from = Math.min(Math.floor(from), Math.floor(to));
-  const _to = Math.max(Math.floor(from), Math.floor(to));
-  return _from + Math.round(Math.random() * Math.abs(_to - _from));
+  const start = Math.min(Math.floor(from), Math.floor(to));
+  const end = Math.max(Math.floor(from), Math.floor(to));
+  return start + Math.round(Math.random() * Math.abs(end - start));
 }
 
 /**
@@ -37,24 +37,22 @@ function getRandArrayElem(anArray) {
   * @returns {number} уникальное случайное число из отрезка
   */
 function createUniqueRandIntGenerator(from, to) {
-  const _from = Math.min(Math.floor(from), Math.floor(to));
-  const _to = Math.max(Math.floor(from), Math.floor(to));
+  const start = Math.min(Math.floor(from), Math.floor(to));
+  const end = Math.max(Math.floor(from), Math.floor(to));
 
-  const prevValues = new Set();
+  const previousValues = new Set();
   return () => {
-    //console.log(prevValues.size);
-    if (prevValues.size >= _to - _from + 1) {
-      //console.error('Все значения закончились');
+    if (previousValues.size >= end - start + 1) {
       return null;
     }
-    let newVal = getRandInt(_from, _to);
-    while (prevValues.has(newVal)) {
-      newVal = getRandInt(_from, _to);
+    let newValue = getRandInt(start, end);
+    while (previousValues.has(newValue)) {
+      newValue = getRandInt(start, end);
     }
 
-    prevValues.add(newVal);
+    previousValues.add(newValue);
 
-    return newVal;
+    return newValue;
   };
 }
 

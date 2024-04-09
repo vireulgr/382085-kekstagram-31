@@ -4,7 +4,7 @@ import { showResultMessage } from '../show-send-result';
 import * as effects from './picture-effects';
 
 const DESCRIPTION_MAX_LENGTH = 140;
-const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const UPLOAD_PICTURE_URL = 'https://31.javascript.htmlacademy.pro/kekstagram/';
 const uploadFormEl = document.querySelector('.img-upload__form');
 const descrInputEl = uploadFormEl.querySelector('.text__description');
 const hashInputEl = uploadFormEl.querySelector('.text__hashtags');
@@ -69,15 +69,14 @@ function onFormSubmit(evt) {
   const submitButtonEl = uploadFormEl.querySelector('#upload-submit');
   submitButtonEl.setAttribute('disabled', '');
 
-  const formData = new FormData(uploadFormEl);
-  const requestInit = { method: 'post', body: formData, credentials: 'same-origin' };
+  const formData = new FormData(evt.target);
+  const requestInit = { method: 'POST', body: formData, credentials: 'same-origin' };
   fetch(UPLOAD_PICTURE_URL, requestInit)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response);
       }
       showResultMessage('success');
-      dialog.closeDialog();
     })
     .catch(() => {
       showResultMessage('error', () => {
@@ -87,6 +86,7 @@ function onFormSubmit(evt) {
     })
     .finally(() => {
       submitButtonEl.removeAttribute('disabled');
+      dialog.closeDialog();
     });
 }
 

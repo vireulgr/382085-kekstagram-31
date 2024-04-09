@@ -19,14 +19,14 @@ const debouncedFilterHandler = debounce((filter) => {
       break;
     }
     case 'filterDiscussed': {
-      const sorted = getPicturesData().slice().sort((a, b) => {
-        if (!a.comments) {
+      const sorted = getPicturesData().slice().sort((pictureLeft, pictureRight) => {
+        if (!pictureLeft.comments) {
           return 1;
         }
-        if (!b.comments) {
+        if (!pictureRight.comments) {
           return -1;
         }
-        return b.comments.length - a.comments.length;
+        return pictureRight.comments.length - pictureLeft.comments.length;
       });
 
       setFilteredPicturesData(sorted);

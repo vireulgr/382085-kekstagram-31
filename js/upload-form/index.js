@@ -48,15 +48,6 @@ imgUploadEl.addEventListener('change', (evt) => {
     return;
   }
 
-  //const reader = new FileReader();
-  //reader.onloadend = (e) => {
-  //  const fileBase64 = e.target.result;
-
-  //  dialog.openDialog(fileBase64);
-  //};
-
-  //reader.readAsDataURL(file);
-
   const fileUrl = URL.createObjectURL(file);
   dialog.openDialog(fileUrl);
 });

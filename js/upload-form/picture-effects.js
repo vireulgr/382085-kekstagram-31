@@ -36,9 +36,9 @@ let currentEffect = EFFECTS[0];
 function setActiveEffect(effect) {
   currentEffect = effect;
   sliderEl.noUiSlider.updateOptions(effectToSliderOptions(effect));
+  sliderEl.noUiSlider.off(); // убираем старый обработчик
   if (effect.selector === '#effect-none') {
     sliderContainerEl.classList.add('hidden');
-    sliderEl.noUiSlider.off();
     onSliderUpdate(0);
   } else {
     sliderContainerEl.classList.remove('hidden');
@@ -80,7 +80,9 @@ function getEffectCssFilterValue(value) {
  * @param {number} sliderValue новое значение
  */
 function onSliderUpdate(sliderValue) {
-  sliderInputEl.value = sliderValue; // запись в hidden элемент
+  const numberValue = Number.parseFloat(sliderValue[0] ?? '0.0');
+  const stringValue = (Number.isInteger(numberValue)) ? numberValue.toFixed(0) : numberValue.toFixed(1);
+  sliderInputEl.value = stringValue; // запись в hidden элемент
   const cssFilterText = getEffectCssFilterValue(sliderValue);
   bigImageEl.style.filter = cssFilterText;
 }

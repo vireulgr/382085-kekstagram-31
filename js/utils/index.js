@@ -1,14 +1,4 @@
 /**
- */
-function debounce(cb, timeInterval) {
-  let timerId;
-  return (...args) => {
-    clearTimeout(timerId);
-    timerId = setTimeout(() => cb.apply(this, args), timeInterval);
-  };
-}
-
-/**
   * @description Генерирует случайное целое число из отрезка. Оба конца отрезка достигаются.
   * @param {number} from начало отрезка (включительно)
   * @param {number} to конец отрезка (включительно)
@@ -53,6 +43,18 @@ function createUniqueRandIntGenerator(from, to) {
     previousValues.add(newValue);
 
     return newValue;
+  };
+}
+
+/** @description функция для устранения дребезга
+  * @param {Function} cb  функция, которую нужно вызывать с устранением дребезга
+  * @param {number} timeInterval интервал в миллисекундах от вызова до фактического исполнения функции
+ */
+function debounce(cb, timeInterval) {
+  let timerId;
+  return (...args) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => cb.apply(this, args), timeInterval);
   };
 }
 

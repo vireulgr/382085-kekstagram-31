@@ -7,10 +7,7 @@ export default defineConfig({
       external: [
         'vendor/pristine/pristine.min.js',
         'vendor/nouislider/nouislider.js'
-      ],
-      input: {
-        main: 'index.html',
-      }
+      ]
     }
   }
 });

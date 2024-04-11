@@ -21,9 +21,5 @@
     "lint": "eslint js/",
     "build": "vite build",
     "preview": "vite preview"
-  },
-  "engines": {
-    "node": "18",
-    "npm": "9"
   }
 }
